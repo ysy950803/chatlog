@@ -74,17 +74,17 @@ chatlog 提供了两个镜像源：
 
 **Docker Hub**:
 ```shell
-docker pull sjzar/chatlog:latest
+docker pull ysy950803/chatlog:latest
 ```
 
 **GitHub Container Registry (ghcr)**:
 ```shell
-docker pull ghcr.io/sjzar/chatlog:latest
+docker pull ghcr.io/ysy950803/chatlog:latest
 ```
 
 > 💡 **镜像地址**: 
-> - Docker Hub: https://hub.docker.com/r/sjzar/chatlog
-> - GitHub Container Registry: https://ghcr.io/sjzar/chatlog
+> - Docker Hub: https://hub.docker.com/r/ysy950803/chatlog
+> - GitHub Container Registry: https://ghcr.io/ysy950803/chatlog
 
 ## 部署方式
 
@@ -96,7 +96,7 @@ docker run -d \
   --name chatlog \
   -p 5030:5030 \
   -v /path/to/your/wechat/data:/app/data \
-  sjzar/chatlog:latest
+  ysy950803/chatlog:latest
 ```
 
 > 这种部署方式依赖于数据目录下的 chatlog.json 文件作为配置，通过 chatlog 获取密钥时将自动更新 chatlog.json 文件
@@ -118,7 +118,7 @@ docker run -d \
   -v /path/to/your/wechat/data:/app/data \
   -v /path/to/work:/app/work \
   --restart unless-stopped \
-  sjzar/chatlog:latest
+  ysy950803/chatlog:latest
 ```
 
 ### Docker Compose 方式
@@ -130,7 +130,7 @@ version: '3.8'
 
 services:
   chatlog:
-    image: sjzar/chatlog:latest
+    image: ysy950803/chatlog:latest
     restart: unless-stopped
     ports:
       - "5030:5030"  # 可修改主机端口，如 "8080:5030"
@@ -354,4 +354,4 @@ ports:
   - "8080:5030"
 ```
 
-> 💡 **获取更多帮助**: 如遇到其他问题，请查看项目的 [Issues](https://github.com/sjzar/chatlog/issues) 页面或提交新的问题反馈。
+> 💡 **获取更多帮助**: 如遇到其他问题，请查看项目的 [Issues](https://github.com/ysy950803/chatlog/issues) 页面或提交新的问题反馈。

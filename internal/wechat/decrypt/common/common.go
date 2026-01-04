@@ -11,7 +11,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/sjzar/chatlog/internal/errors"
+	"github.com/ysy950803/chatlog/internal/errors"
 )
 
 const (

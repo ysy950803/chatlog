@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/sjzar/chatlog/cmd/chatlog"
+	"github.com/ysy950803/chatlog/cmd/chatlog"
 )
 
 func main() {

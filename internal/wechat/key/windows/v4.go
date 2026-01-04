@@ -3,7 +3,7 @@ package windows
 import (
 	"context"
 
-	"github.com/sjzar/chatlog/internal/wechat/decrypt"
+	"github.com/ysy950803/chatlog/internal/wechat/decrypt"
 )
 
 type V4Extractor struct {

@@ -21,11 +21,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 
-	"github.com/sjzar/chatlog/internal/errors"
-	"github.com/sjzar/chatlog/internal/model"
-	"github.com/sjzar/chatlog/pkg/util"
-	"github.com/sjzar/chatlog/pkg/util/dat2img"
-	"github.com/sjzar/chatlog/pkg/util/silk"
+	"github.com/ysy950803/chatlog/internal/errors"
+	"github.com/ysy950803/chatlog/internal/model"
+	"github.com/ysy950803/chatlog/pkg/util"
+	"github.com/ysy950803/chatlog/pkg/util/dat2img"
+	"github.com/ysy950803/chatlog/pkg/util/silk"
 )
 
 //go:embed static

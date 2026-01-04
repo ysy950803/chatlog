@@ -17,11 +17,11 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/rs/zerolog/log"
 
-	"github.com/sjzar/chatlog/internal/errors"
-	"github.com/sjzar/chatlog/internal/model"
-	"github.com/sjzar/chatlog/internal/wechatdb/datasource/dbm"
-	"github.com/sjzar/chatlog/internal/wechatdb/msgstore"
-	"github.com/sjzar/chatlog/pkg/util"
+	"github.com/ysy950803/chatlog/internal/errors"
+	"github.com/ysy950803/chatlog/internal/model"
+	"github.com/ysy950803/chatlog/internal/wechatdb/datasource/dbm"
+	"github.com/ysy950803/chatlog/internal/wechatdb/msgstore"
+	"github.com/ysy950803/chatlog/pkg/util"
 )
 
 const (

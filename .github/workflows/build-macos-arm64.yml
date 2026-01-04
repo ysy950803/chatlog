@@ -1,0 +1,87 @@
+name: Build macOS ARM64
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-macos-arm64:
+    name: Build macOS ARM64
+    runs-on: macos-14  # Apple Silicon (M1) runner
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+          cache: true
+
+      - name: Get version
+        id: version
+        run: |
+          VERSION=$(git describe --tags --always --dirty="-dev" 2>/dev/null || echo "dev")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Building version: $VERSION"
+
+      - name: Build whisper.cpp libraries
+        run: |
+          # Clone whisper.cpp (matching version from go.mod: v0.0.0-20251015072942-4979e04f5dca)
+          git clone https://github.com/ggerganov/whisper.cpp.git /tmp/whisper.cpp
+          cd /tmp/whisper.cpp
+          git checkout 4979e04f5dca
+
+          # Build with cmake (Metal and Accelerate enabled by default on macOS)
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DGGML_METAL=ON \
+            -DGGML_BLAS=ON \
+            -DGGML_BLAS_VENDOR=Apple
+
+          cmake --build build --config Release -j$(sysctl -n hw.ncpu)
+
+          # Copy libraries to project
+          cp build/src/libwhisper.a ${{ github.workspace }}/library/
+          cp build/ggml/src/libggml.a ${{ github.workspace }}/library/
+          cp build/ggml/src/libggml-base.a ${{ github.workspace }}/library/
+          cp build/ggml/src/libggml-cpu.a ${{ github.workspace }}/library/
+          cp build/ggml/src/ggml-metal/libggml-metal.a ${{ github.workspace }}/library/
+          cp build/ggml/src/ggml-blas/libggml-blas.a ${{ github.workspace }}/library/
+
+          # Copy headers
+          cp include/whisper.h ${{ github.workspace }}/include/
+          cp ggml/include/*.h ${{ github.workspace }}/include/
+
+          # List libraries for verification
+          echo "Libraries built:"
+          ls -lh ${{ github.workspace }}/library/
+
+      - name: Build
+        env:
+          CGO_ENABLED: 1
+          GOOS: darwin
+          GOARCH: arm64
+          CGO_CFLAGS: "-I${{ github.workspace }}/include"
+          CGO_LDFLAGS: "-L${{ github.workspace }}/library"
+        run: |
+          mkdir -p bin
+          go build -trimpath \
+            -ldflags '-X "github.com/ysy950803/chatlog/pkg/version.Version=${{ steps.version.outputs.version }}" -w -s' \
+            --tags "fts5" \
+            -o bin/chatlog_darwin_arm64 \
+            main.go
+
+          # Verify the binary
+          file bin/chatlog_darwin_arm64
+          ls -lh bin/chatlog_darwin_arm64
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chatlog_darwin_arm64
+          path: bin/chatlog_darwin_arm64
+          retention-days: 30
